@@ -1,0 +1,15 @@
+.profile-grid {
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px 200px;
+    justify-content: center;
+}
+
+.grid-item {
+    border: 1px solid black;
+    width: 150px;
+    padding: 15px;
+}
+
+.checked {
+    background-color: palegreen;
+}

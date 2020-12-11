@@ -1,0 +1,33 @@
+.img-right{
+    display: flex;
+    justify-content: space-around;
+    margin-left: 300px;
+    margin-right: 300px;
+    margin-top: 50px;
+    margin-bottom: 150px;
+}
+
+.img-right-img {
+    display: inline-block;
+    width: 400px;
+    height: 400px;
+}
+
+.img-right-children {
+    display: inline-block;
+    text-align: left;
+    width: 400px;
+    height: 400px;
+}
+
+.img-right-children > h1 {
+    font-size: 70px;
+}
+
+.img-right-children > h3 {
+    font-size: 30px;
+}
+
+.img-right-children > p {
+    font-size: 20px;
+}

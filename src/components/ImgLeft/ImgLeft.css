@@ -1,0 +1,25 @@
+.img-left{
+    display: flex;
+    justify-content: space-around;
+    margin-left: 300px;
+    margin-right: 300px;
+    margin-top: 50px;
+    margin-bottom: 150px;
+}
+
+.img-left-img {
+    display: inline-block;
+    width: 400px;
+    height: 400px;
+}
+
+.img-left-children {
+    display: inline-block;
+    text-align: left;
+    width: 400px;
+    height: 400px;
+}
+
+.img-left-children > p {
+    font-size: 20px;
+}

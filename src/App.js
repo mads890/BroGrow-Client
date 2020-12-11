@@ -1,25 +1,46 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import LandingPage from './components/LandingPage/LandingPage';
+import LoginPage from './components/LoginPage/LoginPage';
+import SignUpPage from './components/SignUpPage/SignUpPage';
+import ProfilePage from './components/ProfilePage/ProfilePage';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <nav className='nav'>
+          <Navbar />
+        </nav>
+        <main>
+          <Switch>
+            <Route
+              exact
+              path={'/'}
+              component={LandingPage}
+            />
+            <Route
+              exact
+              path={'/login'}
+              component={LoginPage}
+            />
+            <Route
+              exact
+              path={'/register'}
+              component={SignUpPage}
+            />
+            <Route
+              exact
+              path={'/user/:userId'}
+              component={ProfilePage}
+            />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </main>
+      </div>
+    );
+  }
 }
-
-export default App;

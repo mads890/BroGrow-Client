@@ -1,0 +1,42 @@
+.login-page {
+    width: 100%;
+    text-align: center;
+}
+
+.login-page > h1 {
+    font-size: 70px;
+}
+
+.login-page > h3 {
+    font-size: 30px;
+}
+
+.login-button {
+    margin-top: 20px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input {
+    margin-bottom: 20px;
+    width: 60%;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+}
