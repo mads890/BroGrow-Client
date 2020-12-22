@@ -12,52 +12,84 @@ export default class ProfilePage extends Component {
             interests: [
                 {
                     id: 1,
-                    title: 'Mowing the Lawn',
+                    name: 'Politics',
                     checked: true,
                 },
                 {
                     id: 2,
-                    title: 'Drinking Beer',
+                    name: 'Literature',
                     checked: true,
                 },
                 {
                     id: 3,
-                    title: 'Scrapbooking',
+                    name: 'Fashion',
                     checked: false,
                 },
                 {
                     id: 4,
-                    title: 'Driving Really Fast',
+                    name: 'Medicine',
                     checked: true,
                 },
                 {
                     id: 5,
-                    title: 'Cooking Dinner',
+                    name: 'Environmental Science',
                     checked: false,
                 },
-            ]
+            ],
+            hobbies: []
         }
     }
 
     componentDidMount() {
         const { userId } = this.props.match.params
-        return fetch(`${config.API_ENDPOINT}/user/${userId}`, {
+        const options = {
+            method: 'GET',
             headers: {
-                'authorization': `bearer ${TokenService.getAuthToken()}`,
-            },
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${TokenService.getAuthToken()}`
+            }
+        }
+        return fetch(`${config.API_ENDPOINT}/users/${userId}/hobbies`, options)
+        .then(res => {
+            if(!res.ok) {
+                return res.json().then(err => Promise.reject(err))
+            }
+            this.setState({ hobbies: [] })
+            return res.json()    
         })
-            .then(res => 
-                (!res.ok)
-                    ? res.json().then(e => Promise.reject(e))
-                    : res.json()
-            )
-            .then(res => 
-                console.log(res)
-                /* this.setState({ interests: res.interests }) */
-            )
+        .then(res => {
+            console.log(res.hobbies)
+            this.setState({
+                hobbies: res.hobbies
+            })
+        })
+        /*
+        Promise.all([
+            fetch(`${config.API_ENDPOINT}/users/${userId}/hobbies`, options)
+            fetch(`${config.API_ENDPOINT}/users/${userId}/interests`, options)
+        ])
+        .then(([hobbyRes, interestRes]) => {
+            if(!hobbyRes.ok) {
+                return hobbyRes.json().then(err => Promise.reject(err));
+            }
+            if(!interestRes.ok) {
+                return interestRes.json().then(err => Promise.reject(err));
+            }
+            return Promise.all([hobbyRes.json(), interestRes.json()]);
+        })
+        .then(([hobbies, interests]) => {
+            console.log(hobbies)
+            console.log(interests)
+            /*
+            this.setState({
+                hobbies, interests
+            });
+           
+        })
+         */
     }
 
-    toggleChecked = (id) => {
+    toggleCheckedInterest = (id) => {
         let itemIndex = this.state.interests.findIndex(interest =>  interest.id == id)
         let checked = this.state.interests[itemIndex].checked === true ? false : true
         let updatedItem = this.state.interests[itemIndex]
@@ -77,8 +109,10 @@ export default class ProfilePage extends Component {
                     <input type='text' placeholder='Name' />
                     <input type='email' placeholder='your.name@email.com' />
                 </form>
+                <h2>Interests:</h2>
+                <ProfileGrid items={this.state.interests} handleClick={this.toggleCheckedInterest} />
                 <h2>Hobbies:</h2>
-                <ProfileGrid items={this.state.interests} handleClick={this.toggleChecked} />
+                <ProfileGrid items={this.state.hobbies} />
             </div>
         )
     }

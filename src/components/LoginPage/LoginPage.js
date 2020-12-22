@@ -16,7 +16,6 @@ export default class LoginPage extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
         const { email, password } = e.target
-
         return fetch(`${config.API_ENDPOINT}/login`, {
             method: 'POST',
             headers: {
@@ -30,12 +29,11 @@ export default class LoginPage extends Component {
         .then(res => 
             (!res.ok)
                 ? res.json().then(err => Promise.reject(err))
-                : res.json()    
+                : res.json()  
         )
         .then(res => {
             email.value = ''
             password.value = ''
-            console.log(res)
             TokenService.saveAuthToken(res.token)
             this.onLogin(res.user.id)
         })

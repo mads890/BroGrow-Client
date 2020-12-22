@@ -6,10 +6,10 @@ export default class ProfileGrid extends Component {
         let items = this.props.items.map(item => 
             (!item.checked === true)
             ?   <div onClick={(e) => this.props.handleClick(e.target.getAttribute('id'))} className='grid-item' id={item.id} key={item.id} >
-                    {item.title}
+                    {item.name}
                 </div>
             :   <div onClick={(e) => this.props.handleClick(e.target.getAttribute('id'))} className='grid-item checked' id={item.id} key={item.id} >
-                {item.title}
+                {item.name}
                 </div>
             )
         return(
