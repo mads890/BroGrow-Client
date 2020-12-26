@@ -41,3 +41,7 @@ input {
     padding-bottom: 10px;
     font-size: 18px;
 }
+
+.checkbox-container > input {
+    display: inline;
+}

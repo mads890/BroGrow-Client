@@ -1,5 +1,6 @@
 .profile-page {
     text-align: center;
+    margin-bottom: 50px;
 }
 
 .profile-page > h1 {
@@ -16,4 +17,37 @@
 
 .profile-page > h2 {
     font-size: 40px;
+}
+
+.update-button {
+    margin-top: 20px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    width: 130px;
+}
+
+.add-form-container {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.select-button {
+    margin-top: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 14px;
+    width: 100px;
+}
+
+.select-form > label {
+    margin-bottom: 10px;
+    font-size: 18px;
 }
