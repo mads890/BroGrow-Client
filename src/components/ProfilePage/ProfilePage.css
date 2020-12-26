@@ -29,7 +29,7 @@
     width: 130px;
 }
 
-.add-form-container {
+.add-form-container, .delete-form-container {
     display: flex;
     flex-direction: row;
     width: 60%;

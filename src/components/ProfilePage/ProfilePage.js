@@ -105,6 +105,10 @@ export default class ProfilePage extends Component {
     }
     */
 
+    onUpdate = (id) => {
+        this.props.history.push(`/user/${id}`)
+    }
+
     addInterest = (e) => {
         e.preventDefault();
         const { userId } = this.props.match.params
@@ -128,7 +132,8 @@ export default class ProfilePage extends Component {
                 : res.json() 
         )
         .then(res =>
-            console.log(res)
+            console.log(res),
+            window.location.reload()
         )
     }
 
@@ -155,7 +160,64 @@ export default class ProfilePage extends Component {
                 : res.json() 
         )
         .then(res =>
-            console.log(res)
+            console.log(res),
+            window.location.reload()
+        )
+    }
+
+    deleteInterest = (e) => {
+        e.preventDefault();
+        const { userId } = this.props.match.params
+        const intId = e.target.interests.value;
+        return fetch(`${config.API_ENDPOINT}/user/${userId}/interests/${intId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${TokenService.getAuthToken()}`
+            },
+            body: JSON.stringify({
+                user_interest: {
+                    user_id: userId,
+                    interest_id: intId
+                }
+            }),
+        })
+        .then(res => 
+            (!res.ok)
+                ? res.json().then(err => Promise.reject(err))
+                : res.json() 
+        )
+        .then(res =>
+            console.log(res),
+            window.location.reload()    
+        )
+    }
+
+    deleteHobby = (e) => {
+        e.preventDefault();
+        const { userId } = this.props.match.params
+        const hobbyId = e.target.hobbies.value;
+        return fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies/${hobbyId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${TokenService.getAuthToken()}`
+            },
+            body: JSON.stringify({
+                user_hobby: {
+                    user_id: userId,
+                    hobby_id: hobbyId
+                }
+            }),
+        })
+        .then(res => 
+            (!res.ok)
+                ? res.json().then(err => Promise.reject(err))
+                : res.json() 
+        )
+        .then(res =>
+            console.log(res),
+            window.location.reload()
         )
     }
 
@@ -167,6 +229,12 @@ export default class ProfilePage extends Component {
             <option value={interest.id}>{interest.name}</option>
         )
         const selectHobbyOptions = this.state.hobbies.map(hobby => 
+            <option value={hobby.id}>{hobby.name}</option>
+        )
+        const deleteInterestOptions = this.state.userInterests.map(interest => 
+            <option value={interest.id}>{interest.name}</option>
+        )
+        const deleteHobbyOptions = this.state.userHobbies.map(hobby => 
             <option value={hobby.id}>{hobby.name}</option>
         )
         return(
@@ -193,6 +261,22 @@ export default class ProfilePage extends Component {
                             {selectHobbyOptions}
                         </select>
                         <button className='select-button' type='submit'>Add Hobby</button>
+                    </form>
+                </div>
+                <div className='delete-form-container'>
+                    <form className='select-form' onSubmit={this.deleteInterest}>
+                        <label htmlFor='interests'>Delete Interests...</label>
+                        <select name='interests'>
+                            {deleteInterestOptions}
+                        </select>
+                        <button className='select-button' type='submit'>Delete Interest</button>
+                    </form>
+                    <form className='select-form' onSubmit={this.deleteHobby}>
+                        <label htmlFor='hobbies'>Delete Hobbies...</label>
+                        <select name='hobbies'>
+                            {deleteHobbyOptions}
+                        </select>
+                        <button className='select-button' type='submit'>Delete Hobby</button>
                     </form>
                 </div>
                 
