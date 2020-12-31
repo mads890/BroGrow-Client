@@ -6,7 +6,7 @@ import config from '../../config';
 export default class LoginPage extends Component {
     
     onRegister = (id) => {
-        this.props.history.push(`/user/${id}`)
+        this.props.history.push(`/user/${id}/form`)
     }
     handleSubmit = (e) => {
         e.preventDefault()

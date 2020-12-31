@@ -1,0 +1,55 @@
+.hidden {
+    display: none;
+}
+
+.next-button, .prev-button, .submit-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    width: 130px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+.step1, .step2, .step3 {
+    text-align: center;
+}
+
+.setp1 > label, .step1 > input {
+    display: block;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-grid-item > input {
+    opacity: 0;
+    width: 1em;
+    height: 1em;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 225px 225px 225px 225px 225px;
+    justify-content: center;
+    grid-gap: 20px;
+}
+
+.form-grid-item {
+    text-align: center;
+}
+
+.check-label {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
+}
+
+.form-grid-item input:checked + .check-label {
+     background-color: greenyellow;
+}

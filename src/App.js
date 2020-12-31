@@ -7,8 +7,10 @@ import LoginPage from './components/LoginPage/LoginPage';
 import SignUpPage from './components/SignUpPage/SignUpPage';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import UpdateForm from './components/UpdateForm/UpdateForm';
 
 export default class App extends Component {
+
   render() {
     return (
       <div className="App">
@@ -36,6 +38,11 @@ export default class App extends Component {
               exact
               path={'/user/:userId'}
               component={ProfilePage}
+            />
+            <Route
+              exact
+              path={'/user/:userId/form'}
+              component={UpdateForm}
             />
             <Route component={NotFoundPage} />
           </Switch>
