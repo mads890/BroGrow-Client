@@ -11,7 +11,7 @@
     font-size: 30px;
 }
 
-.register-button {
+.register-button, .page-button {
     margin-top: 20px;
     padding-right: 15px;
     padding-left: 15px;
@@ -19,22 +19,35 @@
     padding-bottom: 10px;
     font-size: 20px;
     width: 130px;
+    margin-left: 200px;
+    margin-right: 200px;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 500px;
-    padding: 50px;
+    text-align: center;
+    width: 100%;
+}
+
+.step1, .step2 {
+    width: 100%;
+    text-align: center;
+}
+
+.setp1 > label, .step1 > input {
+    width: 300px;
+}
+
+.setp2 > label, .step2 > input {
+    display: block;
+    margin-top: 15px;
     margin-left: auto;
     margin-right: auto;
+    width: 300px;
 }
 
 input {
     margin-bottom: 20px;
-    width: 60%;
+    width: 100%;
     padding-right: 15px;
     padding-left: 15px;
     padding-top: 10px;

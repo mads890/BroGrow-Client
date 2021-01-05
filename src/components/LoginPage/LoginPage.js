@@ -47,7 +47,7 @@ export default class LoginPage extends Component {
             <div className='login-page'>
                 <h1>Crew</h1>
                 <h3>No Contact Networking</h3>
-                <form onSubmit={this.handleSubmit} >
+                <form className='login-form' onSubmit={this.handleSubmit} >
                     <input type='email' name='email' placeholder='Email'>
                     </input>
                     <input type='password' name='password' placeholder='Password'>

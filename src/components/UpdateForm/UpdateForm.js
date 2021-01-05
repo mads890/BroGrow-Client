@@ -16,9 +16,10 @@ export default class UpdateForm extends Component {
             userHobbiesForComp: [], 
             userInterestsForComp: [],
             userTeams: [],
-            title: '',
-            email: '',
-            age: 99
+            hobbySearchTerm: '',
+            hobbiesFiltered: [],
+            interestSearchTerm: '',
+            interestsFiltered: [],
         }
       }
     
@@ -34,19 +35,21 @@ export default class UpdateForm extends Component {
         Promise.all([
             fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies`, options),
             fetch(`${config.API_ENDPOINT}/user/${userId}/interests`, options),
-            fetch(`${config.API_ENDPOINT}/user/${userId}`, options),
+            fetch(`${config.API_ENDPOINT}/user/${userId}/teams`, options),
             fetch(`${config.API_ENDPOINT}/hobbies`, options),
-            fetch(`${config.API_ENDPOINT}/interests`, options)
+            fetch(`${config.API_ENDPOINT}/interests`, options),
+            fetch(`${config.API_ENDPOINT}/teams`, options)
+
         ])
-        .then(([uHobbyRes, uIntRes, userRes, hobbyRes, intRes]) => {
+        .then(([uHobbyRes, uIntRes, uTeamRes, hobbyRes, intRes, teamRes]) => {
             if(!uHobbyRes.ok) {
                 return uHobbyRes.json().then(err => Promise.reject(err));
             }
             if(!uIntRes.ok) {
                 return uIntRes.json().then(err => Promise.reject(err));
             }
-            if(!userRes.ok) {
-                return userRes.json().then(err => Promise.reject(err))
+            if(!uTeamRes.ok) {
+                return uTeamRes.json().then(err => Promise.reject(err));
             }
             if(!hobbyRes.ok) {
                 return hobbyRes.json().then(err => Promise.reject(err));
@@ -54,55 +57,32 @@ export default class UpdateForm extends Component {
             if(!intRes.ok) {
                 return intRes.json().then(err => Promise.reject(err));
             }
-            return Promise.all([uHobbyRes.json(), uIntRes.json(), userRes.json(), hobbyRes.json(), intRes.json()]);
+            if(!teamRes.ok) {
+                return teamRes.json().then(err => Promise.reject(err));
+            }
+            return Promise.all([uHobbyRes.json(), uIntRes.json(), uTeamRes.json(), hobbyRes.json(), intRes.json(), teamRes.json()]);
         })
-        .then(([uHobbyRes, uIntRes, userRes, hobbyRes, intRes]) => {
+        .then(([uHobbyRes, uIntRes, uTeamRes, hobbyRes, intRes, teamRes]) => {
             this.setState({
                 userHobbies: uHobbyRes.user_hobbies, 
                 userInterests: uIntRes.user_interests,
                 userHobbiesForComp: uHobbyRes.user_hobbies, 
                 userInterestsForComp: uIntRes.user_interests,
-                //userTeams: uTeamRes.user_teams,
-                email: userRes.user.email,
+                userTeamsForComp: uTeamRes.user_teams,
+                userTeams: uTeamRes.user_teams,
                 hobbies: hobbyRes.hobbies,
                 interests: intRes.interests,
-                //teams: teamRes.teams
+                teams: teamRes.teams,
+                hobbiesFiltered: hobbyRes.hobbies,
+                interestsFiltered: intRes.interests,
             });
         })   
       }
 
-      /*
-        handleUpdateUser = (e) => {
-            e.preventDefault();
-            const { userId } = this.props.match.params
-            const { title, age } = e.target
-            return fetch(`${config.API_ENDPOINT}/user/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user: {
-                        age: age.value,
-                        name: title.value
-                    }
-                }),
-            })
-            .then(res => 
-                (!res.ok)
-                    ? res.json().then(err => Promise.reject(err))
-                    : res.json()    
-            )
-            .then(res =>
-                console.log(res)    
-            )
-        }
-        */
-    
-    _next = (e) => {
+    handleChangePage = (e) => {
         e.preventDefault()
-        const newStep = this.state.step + 1
-        if (newStep === 2) {
+        if(this.state.step === 1) {
+            const newStep = this.state.step + 1
             const stepOne = document.getElementById('step1')
             const stepTwo = document.getElementById('step2')
             stepOne.classList.add('hidden')
@@ -111,30 +91,8 @@ export default class UpdateForm extends Component {
                 step: newStep
             })
         }
-        else if (newStep === 3) {
-            const stepThree = document.getElementById('step3')
-            const stepTwo = document.getElementById('step2')
-            stepThree.classList.remove('hidden')
-            stepTwo.classList.add('hidden')
-            this.setState({
-                step: newStep
-            })
-        }
-    }
-
-    _prev = (e) => {
-        e.preventDefault()
-        const newStep = this.state.step - 1
-        if (newStep === 2) {
-            const stepThree = document.getElementById('step3')
-            const stepTwo = document.getElementById('step2')
-            stepThree.classList.add('hidden')
-            stepTwo.classList.remove('hidden')
-            this.setState({
-                step: newStep
-            })
-        }
-        else if (newStep === 1) {
+        else if (this.state.step === 2) {
+            const newStep = this.state.step - 1
             const stepOne = document.getElementById('step1')
             const stepTwo = document.getElementById('step2')
             stepOne.classList.remove('hidden')
@@ -178,6 +136,41 @@ export default class UpdateForm extends Component {
         }
     }
 
+    handleCheckTeam = (e) => {
+        const teamId = Number(e.target.value)
+        const teamObj = this.state.teams.find(team => team.id === teamId)
+
+        if(e.target.checked) {
+            this.setState({
+                userTeams: [...this.state.userTeams, teamObj]
+            })
+        }
+        else {
+            const newTeams = this.state.userTeams.filter(team => team.id !== teamId)
+            this.setState({
+                userTeams: newTeams
+            })
+        }
+    }
+
+    handleChangeHobbySearchTerm = (e) => {
+        const hobbySearchTerm = e.target.value
+        const hobbiesFiltered = this.state.hobbies.filter(hobby => {
+            return hobby.name.toLowerCase().includes(hobbySearchTerm.toLowerCase())
+        })
+        this.setState({ hobbySearchTerm })
+        this.setState({ hobbiesFiltered })
+    }
+
+    handleChangeInterestSearchTerm = (e) => {
+        const interestSearchTerm = e.target.value
+        const interestsFiltered = this.state.interests.filter(interest => {
+            return interest.name.toLowerCase().includes(interestSearchTerm.toLowerCase())
+        })
+        this.setState({ interestSearchTerm })
+        this.setState({ interestsFiltered })
+    }
+
     onCompleteSubmit = (id) => {
         this.props.history.push(`/user/${id}`)
     }
@@ -185,10 +178,13 @@ export default class UpdateForm extends Component {
     handleSubmitInfo = (e) => {
         e.preventDefault()
         const { userId } = this.props.match.params
-        //const title = e.target.name.value
-        //const age = e.target.age.value
         const userHobbies = this.state.userHobbies
         const userInterests = this.state.userInterests
+        const userTeams = this.state.userTeams
+        const userHobbiesForComp = this.state.userHobbiesForComp
+        const userInterestsForComp = this.state.userInterestsForComp
+        const userTeamsForComp = this.state.userTeamsForComp
+
         userHobbies.forEach(hobby => {
             if(!this.state.userHobbiesForComp.find(item => item.id === hobby.id)) {
                 return fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies`, {
@@ -210,10 +206,13 @@ export default class UpdateForm extends Component {
                         : res.json()    
                 )
                 .then(res =>
-                    console.log(res)    
+                    console.log(res),
+                    console.log('check hobbies ran')  
                 )
             }
-            else {
+        })
+        userHobbiesForComp.forEach(hobby => {
+            if(!this.state.userHobbies.find(item => item.id === hobby.id)) {
                 return fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies/${hobby.id}`, {
                     method: 'DELETE',
                     headers: {
@@ -233,7 +232,8 @@ export default class UpdateForm extends Component {
                         : res.json()    
                 )
                 .then(res =>
-                    console.log(res)    
+                    console.log(res),
+                    console.log('uncheck hobbies ran') 
                 )
             }
         })
@@ -258,10 +258,13 @@ export default class UpdateForm extends Component {
                         : res.json()    
                 )
                 .then(res =>
-                    console.log(res)    
+                    console.log(res),
+                    console.log('check interests ran')   
                 )
             }
-            else {
+        })
+        userInterestsForComp.forEach(interest => {
+            if(!this.state.userInterests.find(item => item.id === interest.id)) {
                 return fetch(`${config.API_ENDPOINT}/user/${userId}/interests/${interest.id}`, {
                     method: 'DELETE',
                     headers: {
@@ -281,7 +284,60 @@ export default class UpdateForm extends Component {
                         : res.json()    
                 )
                 .then(res =>
-                    console.log(res)    
+                    console.log(res),
+                    console.log('uncheck interests ran')    
+                )
+            }
+        })
+        userTeams.forEach(team => {
+            if(!this.state.userTeamsForComp.find(item => item.id === team.id)) {
+                return fetch(`${config.API_ENDPOINT}/user/${userId}/teams`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `bearer ${TokenService.getAuthToken()}`
+                    },
+                    body: JSON.stringify({
+                        user_team: {
+                            user_id: userId,
+                            team_id: team.id
+                        }
+                    }),
+                })
+                .then(res => 
+                    (!res.ok)
+                        ? res.json().then(err => Promise.reject(err))
+                        : res.json()    
+                )
+                .then(res =>
+                    console.log(res),
+                    console.log('check teams ran')  
+                )
+            }
+        })
+        userTeamsForComp.forEach(team => {
+            if(!this.state.userTeams.find(item => item.id === team.id)) {
+                return fetch(`${config.API_ENDPOINT}/user/${userId}/teams/${team.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `bearer ${TokenService.getAuthToken()}`
+                    },
+                    body: JSON.stringify({
+                        user_team: {
+                            user_id: userId,
+                            team_id: team.id
+                        }
+                    }),
+                })
+                .then(res => 
+                    (!res.ok)
+                        ? res.json().then(err => Promise.reject(err))
+                        : res.json()    
+                )
+                .then(res =>
+                    console.log(res),
+                    console.log('uncheck teams ran')   
                 )
             }
         })
@@ -291,7 +347,8 @@ export default class UpdateForm extends Component {
     render() {
         const checkedInterestList = this.state.userInterests.map(interest => interest.id)
         const checkedHobbyList = this.state.userHobbies.map(hobby => hobby.id)
-        const interestGridItems = this.state.interests.map(interest => {
+        const checkedTeamList = this.state.userTeams.map(team => team.id)
+        const interestGridItems = this.state.interestsFiltered.map(interest => {
             if(checkedInterestList.includes(interest.id)) {
                 return(
                         <label className='form-grid-item'><input onChange={this.handleCheckInterest} className='checkbox' name='interests' value={interest.id} type='checkbox' checked /><div className='check-label'><p>{interest.name}</p></div></label>
@@ -304,7 +361,7 @@ export default class UpdateForm extends Component {
             }
         }
         )
-        const hobbyGridItems = this.state.hobbies.map(hobby => {
+        const hobbyGridItems = this.state.hobbiesFiltered.map(hobby => {
             if(checkedHobbyList.includes(hobby.id)) {
                 return(
                     <label className='form-grid-item'><input onChange={this.handleCheckHobby} className='checkbox' name='hobbies' value={hobby.id} type='checkbox' checked /><div className='check-label'><p>{hobby.name}</p></div></label>
@@ -317,44 +374,108 @@ export default class UpdateForm extends Component {
             }
         }
         )
+        const baseballGridItems = this.state.teams.map(team => {
+            if(team.sport === 'baseball') {
+                if(checkedTeamList.includes(team.id)) {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+                else {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+            }
+        }
+        )
+        const basketballGridItems = this.state.teams.map(team => {
+            if(team.sport === 'basketball') {
+                if(checkedTeamList.includes(team.id)) {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+                else {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+            }
+        }
+        )
+        const footballGridItems = this.state.teams.map(team => {
+            if(team.sport === 'football') {
+                if(checkedTeamList.includes(team.id)) {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+                else {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+            }
+        }
+        )
+        const hockeyGridItems = this.state.teams.map(team => {
+            if(team.sport === 'hockey') {
+                if(checkedTeamList.includes(team.id)) {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+                else {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+            }
+        }
+        )
+        const soccerGridItems = this.state.teams.map(team => {
+            if(team.sport === 'soccer') {
+                if(checkedTeamList.includes(team.id)) {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+                else {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+            }
+        }
+        )
         
         return(
             <div>
                 <form onSubmit={this.handleSubmitInfo}>
                 <div className='step1' id='step1'>
-                    <h1>Basic Info</h1>
-                    <label htmlFor='name'>How should we introduce you?</label>
-                    <input type='name' name='name' placeholder='Name' />
-                    <label htmlFor='age'>What is your age?</label>
-                    <input type='number' name='age' placeholder='Age' />
-                    <button className='next-button' onClick={this._next}>Next</button>
-                </div>
-                <div className='step2 hidden' id='step2'>
                     <h1>Your Interests and Hobbies</h1>
                     <h2>Hobbies:</h2>
+                    <input value={this.state.hobbySearchTerm} onChange={this.handleChangeHobbySearchTerm} placeholder='Search Hobbies...' />
                     <div className='form-grid'>{hobbyGridItems}</div>
                     <h2>Interests:</h2>
+                    <input value={this.state.interestSearchTerm} onChange={this.handleChangeInterestSearchTerm} placeholder='Search Interests...' />
                     <div className='form-grid'>{interestGridItems}</div>
-                    <button className='prev-button' onClick={this._prev}>Previous</button>
-                    <button className='next-button' onClick={this._next}>Next</button>
+                    <button className='next-button' onClick={this.handleChangePage}>Next</button>
                 </div>
-                <div className='step3 hidden' id='step3'>
+                <div className='step2 hidden' id='step2'>
                     <h1>Your Teams</h1>
                     <h2>Baseball:</h2>
-                    <div className='form-grid'></div>
+                    <div className='form-grid'>{baseballGridItems}</div>
                     <h2>Basketball:</h2>
-                    <div className='form-grid'></div>
+                    <div className='form-grid'>{basketballGridItems}</div>
                     <h2>Football:</h2>
-                    <div className='form-grid'></div>
-                    <h2>Golf:</h2>
-                    <div className='form-grid'></div>
+                    <div className='form-grid'>{footballGridItems}</div>
                     <h2>Hockey:</h2>
-                    <div className='form-grid'></div>
+                    <div className='form-grid'>{hockeyGridItems}</div>
                     <h2>Soccer:</h2>
-                    <div className='form-grid'></div>
-                    <h2>Tennis:</h2>
-                    <div className='form-grid'></div>
-                    <button className='prev-button' onClick={this._prev}>Previous</button>
+                    <div className='form-grid'>{soccerGridItems}</div>
+                    <button className='prev-button' onClick={this.handleChangePage}>Previous</button>
                     <button className='submit-button' type='submit'>Submit</button>
                 </div>
                 </form>
