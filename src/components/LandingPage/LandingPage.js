@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import './LandingPage.css';
 import ImgLeft from '../ImgLeft/ImgLeft';
 import ImgRight from '../ImgRight/ImgRight';
@@ -11,6 +12,7 @@ export default class LandingPage extends Component {
                     <h1>Crew</h1>
                     <h3>No Contact Networking</h3>
                     <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships. So we connect busy dudes looking for someone to grab a beer with, play a round, or shoot the shit. </p>
+                    <Link to='/register'>Join Crew</Link>
                 </ImgRight>
                 <ImgLeft imgSrc={'https://comps.canstockphoto.com/young-cheerful-caucasian-man-dancing-eps-vector_csp55575648.jpg'}>
                     <p>Our Premise Is Simple:</p>

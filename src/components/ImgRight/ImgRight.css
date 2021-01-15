@@ -22,12 +22,32 @@
 
 .img-right-children > h1 {
     font-size: 70px;
+    margin-bottom: 0;
+    margin-top: 0;
 }
 
 .img-right-children > h3 {
     font-size: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .img-right-children > p {
     font-size: 20px;
+}
+
+.img-right-children > a {
+    display: inline-block;
+    margin-top: 10px;
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 24px;
+    font-family: 'Nazare';
+    background-color: transparent;
+    color: red;
+    border: 5px solid red;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
+    text-decoration: none;
 }

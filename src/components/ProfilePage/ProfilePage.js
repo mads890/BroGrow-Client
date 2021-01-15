@@ -107,18 +107,17 @@ export default class ProfilePage extends Component {
                 <h3>No Contact Networking</h3>
                 <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships.</p>
                 <form className='update-info-form' onSubmit={this.handleUpdateUser}>
-                    <input name='title' type='text' placeholder={this.state.title} />
-                    <input name='email' type='email' placeholder={this.state.email} />
+                    <input className='text-input' name='title' type='text' placeholder={this.state.title} />
+                    <input className='text-input' name='email' type='email' placeholder={this.state.email} />
                     <button type='submit' className='update-button'>Update</button>
                 </form>
                 
                 <h2>Your Interests:</h2>
-                <ProfileGrid items={this.state.userInterests} />
+                <ProfileGrid userId={userId} items={this.state.userInterests} />
                 <h2>Your Hobbies:</h2>
-                <ProfileGrid items={this.state.userHobbies} />
+                <ProfileGrid userId={userId} items={this.state.userHobbies} />
                 <h2>Your Teams:</h2>
-                <ProfileGrid items={this.state.userTeams} />
-                <Link className='update-link' to={`/user/${userId}/form`}><button className='update-button'>Update</button></Link>
+                <ProfileGrid userId={userId} items={this.state.userTeams} />
             </div>
         )
     }

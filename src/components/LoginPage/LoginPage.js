@@ -45,15 +45,17 @@ export default class LoginPage extends Component {
     render() {
         return(
             <div className='login-page'>
-                <h1>Crew</h1>
-                <h3>No Contact Networking</h3>
+                <h1>Welcome Back</h1>
                 <form className='login-form' onSubmit={this.handleSubmit} >
-                    <input type='email' name='email' placeholder='Email'>
+                    <input className='text-input' type='email' name='email' placeholder='Email'>
                     </input>
-                    <input type='password' name='password' placeholder='Password'>
+                    <input className='text-input' type='password' name='password' placeholder='Password'>
                     </input>
                 <button type='submit' className='login-button'>Login</button>
                 </form>
+                <div className='navy-stripe'></div>
+                <div className='blue-stripe'></div>
+                <div className='red-stripe'></div>
             </div>
         )
     }

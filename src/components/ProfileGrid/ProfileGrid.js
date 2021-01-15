@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './ProfileGrid.css';
 
 export default class ProfileGrid extends Component {
     render() {
+        const userId = this.props.userId
         let items = this.props.items.map(item => 
             (!item.checked === true)
             ?   <div className='grid-item' id={item.id} key={item.id} >
@@ -15,6 +17,7 @@ export default class ProfileGrid extends Component {
         return(
             <div className='profile-grid'>
                 {items}
+                <Link className='add-link' to={`/user/${userId}/form/3`}>+</Link>
             </div>
         )
     }

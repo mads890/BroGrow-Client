@@ -79,7 +79,7 @@ export default class UpdateForm extends Component {
         })   
       }
 
-    handleChangePage = (e) => {
+    handleNextPage = (e) => {
         e.preventDefault()
         if(this.state.step === 1) {
             const newStep = this.state.step + 1
@@ -92,11 +92,35 @@ export default class UpdateForm extends Component {
             })
         }
         else if (this.state.step === 2) {
+            const newStep = this.state.step + 1
+            const stepThree = document.getElementById('step3')
+            const stepTwo = document.getElementById('step2')
+            stepThree.classList.remove('hidden')
+            stepTwo.classList.add('hidden')
+            this.setState({
+                step: newStep
+            })
+        }
+    }
+
+    handlePrevPage = (e) => {
+        e.preventDefault()
+        if(this.state.step === 2) {
             const newStep = this.state.step - 1
             const stepOne = document.getElementById('step1')
             const stepTwo = document.getElementById('step2')
             stepOne.classList.remove('hidden')
             stepTwo.classList.add('hidden')
+            this.setState({
+                step: newStep
+            })
+        }
+        else if (this.state.step === 3) {
+            const newStep = this.state.step - 1
+            const stepThree = document.getElementById('step3')
+            const stepTwo = document.getElementById('step2')
+            stepThree.classList.add('hidden')
+            stepTwo.classList.remove('hidden')
             this.setState({
                 step: newStep
             })
@@ -454,29 +478,36 @@ export default class UpdateForm extends Component {
             <div>
                 <form onSubmit={this.handleSubmitInfo}>
                 <div className='step1' id='step1'>
-                    <h1>Your Interests and Hobbies</h1>
-                    <h2>Hobbies:</h2>
-                    <input value={this.state.hobbySearchTerm} onChange={this.handleChangeHobbySearchTerm} placeholder='Search Hobbies...' />
-                    <div className='form-grid'>{hobbyGridItems}</div>
-                    <h2>Interests:</h2>
-                    <input value={this.state.interestSearchTerm} onChange={this.handleChangeInterestSearchTerm} placeholder='Search Interests...' />
+                    <h1>Let's Get To Know you.</h1>
+                    <h2>What are you interested in?</h2>
+                    <p>Pick as many as you like. We’ll use these to match you up with other guys who like to discuss the same things.</p>
+                    <input className='text-input' value={this.state.interestSearchTerm} onChange={this.handleChangeInterestSearchTerm} placeholder='Search Interests...' />
                     <div className='form-grid'>{interestGridItems}</div>
-                    <button className='next-button' onClick={this.handleChangePage}>Next</button>
+                    <button className='next-button' onClick={this.handleNextPage}>Next: Hobbies</button>
                 </div>
                 <div className='step2 hidden' id='step2'>
-                    <h1>Your Teams</h1>
-                    <h2>Baseball:</h2>
+                    <h1>How About Hobbies?</h1>
+                    <h2>What do you like to do?</h2>
+                    <p>In our opinion, interests are things you like to discuss, while hobbies are activities you enjoy.</p>
+                    <input className='text-input' value={this.state.hobbySearchTerm} onChange={this.handleChangeHobbySearchTerm} placeholder='Search Hobbies...' />
+                    <div className='form-grid'>{hobbyGridItems}</div>
+                    <button className='next-button' onClick={this.handleNextPage}>Next: Teams</button>
+                </div>
+                <div className='step3 hidden' id='step3'>
+                    <h1>What Colors Do You Bleed?</h1>
+                    <h2>Which teams do you follow?</h2>
+                    <p>We saved the best for last, because nothing defines a man like the teams he roots for.</p>
+                    <h2>MLB</h2>
                     <div className='form-grid'>{baseballGridItems}</div>
-                    <h2>Basketball:</h2>
+                    <h2>NBA</h2>
                     <div className='form-grid'>{basketballGridItems}</div>
-                    <h2>Football:</h2>
+                    <h2>NFL</h2>
                     <div className='form-grid'>{footballGridItems}</div>
-                    <h2>Hockey:</h2>
+                    <h2>NHL</h2>
                     <div className='form-grid'>{hockeyGridItems}</div>
-                    <h2>Soccer:</h2>
+                    <h2>Association Football (Soccer)</h2>
                     <div className='form-grid'>{soccerGridItems}</div>
-                    <button className='prev-button' onClick={this.handleChangePage}>Previous</button>
-                    <button className='submit-button' type='submit'>Submit</button>
+                    <button className='submit-button' type='submit'>Complete Profile</button>
                 </div>
                 </form>
             </div>

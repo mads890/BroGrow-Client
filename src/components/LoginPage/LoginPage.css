@@ -5,6 +5,7 @@
 
 .login-page > h1 {
     font-size: 70px;
+    margin-bottom: 0
 }
 
 .login-page > h3 {
@@ -13,11 +14,16 @@
 
 .login-button {
     margin-top: 20px;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 70px;
+    padding-left: 70px;
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 20px;
+    font-family: 'Nazare';
+    background-color: red;
+    color: white;
+    border: 0;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
 }
 
 .login-form {
@@ -31,7 +37,7 @@
     margin-right: auto;
 }
 
-input {
+.text-input {
     margin-bottom: 20px;
     width: 60%;
     padding-right: 15px;
@@ -39,4 +45,33 @@ input {
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 18px;
+    font-family: 'Nazare';
+    color: #1D3557;
+    border: 2px solid #1D3557;
+    background-color: transparent;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+input::placeholder {
+    color: #1D3557;
+    text-align: center;
+}
+
+.navy-stripe, .blue-stripe, .red-stripe {
+    width:3375px;
+    height: 100px;
+    transform: rotate(345deg);
+    margin-bottom: 30px;
+}
+
+.navy-stripe {
+    background-color: #1D3557;
+}
+
+.blue-stripe {
+    background-color: #457B9D;
+}
+
+.red-stripe {
+    background-color: red;
 }

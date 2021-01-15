@@ -20,6 +20,12 @@
     height: 400px;
 }
 
+.img-left-children > h3 {
+    font-size: 30px;
+    font-family: 'Nazare';
+}
+
 .img-left-children > p {
     font-size: 20px;
+    font-family: 'Nazare';
 }

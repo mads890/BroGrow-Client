@@ -11,8 +11,8 @@ export default class LoginPage extends Component {
         }
     }
 
-    onRegister = (id) => {
-        this.props.history.push(`/user/${id}/form`)
+    onRegister = () => {
+        this.props.history.push(`/user/confirm`)
     }
     handleSubmit = (e) => {
         e.preventDefault()
@@ -46,7 +46,7 @@ export default class LoginPage extends Component {
             tos.checked = false
             console.log(res)
             TokenService.saveAuthToken(res.token)
-            this.onRegister(res.user.id)
+            this.onRegister()
         })
     }
 
@@ -77,30 +77,28 @@ export default class LoginPage extends Component {
     render() {
         return(
             <div className='sign-up-page'>
-                <h1>Crew</h1>
-                <h3>No Contact Networking</h3>
+                <h1>Find Your Crew</h1>
                 <form onSubmit={this.handleSubmit}>
                     <div className='step1' id='step1'>
-                        <input type='email' name='email' placeholder='Email' />
-                        <input type='password' name='password' placeholder='Password' />
+                        <input className='text-input' type='text' name='name' placeholder='Name' />
+                        <input className='text-input' type='number' name='age' placeholder='Age' />
+                        <input className='text-input' type='text' name='location' placeholder='Location' />
                         
                         <button className='page-button' onClick={this.handleChangePage}>Next</button>
                     </div>
                     <div className='step2 hidden' id='step2'>
-                        <h1>Basic Info</h1>
-                        <label htmlFor='name'>How should we introduce you?</label>
-                        <input type='name' name='name' placeholder='Name' />
-                        <label htmlFor='age'>What is your age?</label>
-                        <input type='number' name='age' placeholder='Age' />
+                        <input className='text-input' type='email' name='email' placeholder='Email' />
+                        <input className='text-input' type='password' name='password' placeholder='Password' />
                         <div className='checkbox-container'>
                             <h3>Agree to Terms?</h3>
-                            <input type='checkbox' name='tos' value={1} /> <label>Yes</label>
+                            <input className='tos-input' type='checkbox' name='tos' value={1} /><label>Yes</label>
                         </div>
-                        <button className='page-button' onClick={this.handleChangePage}>Previous</button>
                         <button type='submit' className='register-button'>Sign Up</button>
                     </div>
-                    
                 </form>
+                <div className='navy-stripe'></div>
+                <div className='blue-stripe'></div>
+                <div className='red-stripe'></div>
             </div>
         )
     }
