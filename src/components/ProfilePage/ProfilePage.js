@@ -1,101 +1,34 @@
 import React, { Component } from 'react';
 import './ProfilePage.css';
-import { Link } from 'react-router-dom';
 import ProfileGrid from '../ProfileGrid/ProfileGrid';
-import TokenService from '../../services/token-service';
-import config from '../../config';
+import CrewApiService from '../../services/CrewApiService';
+import ProfileContext from '../../contexts/ProfileContext';
 
 export default class ProfilePage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            interests: [],
-            hobbies: [],
-            userInterests: [],
-            userHobbies: [],
-            userTeams: [],
-            title: '',
-            email: ''
-        }
-      }
-    
-      componentDidMount() {
+    static contextType = ProfileContext
+
+    componentDidMount() {
         const { userId } = this.props.match.params
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `bearer ${TokenService.getAuthToken()}`
-            }
-        }
-        Promise.all([
-            fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies`, options),
-            fetch(`${config.API_ENDPOINT}/user/${userId}/interests`, options),
-            fetch(`${config.API_ENDPOINT}/user/${userId}/teams`, options),
-            fetch(`${config.API_ENDPOINT}/user/${userId}`, options),
-            fetch(`${config.API_ENDPOINT}/hobbies`, options),
-            fetch(`${config.API_ENDPOINT}/interests`, options)
-        ])
-        .then(([uHobbyRes, uIntRes, uTeamRes, userRes, hobbyRes, intRes]) => {
-            if(!uHobbyRes.ok) {
-                return uHobbyRes.json().then(err => Promise.reject(err));
-            }
-            if(!uIntRes.ok) {
-                return uIntRes.json().then(err => Promise.reject(err));
-            }
-            if(!uTeamRes.ok) {
-                return uTeamRes.json().then(err => Promise.reject(err));
-            }
-            if(!userRes.ok) {
-                return userRes.json().then(err => Promise.reject(err))
-            }
-            if(!hobbyRes.ok) {
-                return hobbyRes.json().then(err => Promise.reject(err));
-            }
-            if(!intRes.ok) {
-                return intRes.json().then(err => Promise.reject(err));
-            }
-            return Promise.all([uHobbyRes.json(), uIntRes.json(), uTeamRes.json(), userRes.json(), hobbyRes.json(), intRes.json()]);
-        })
-        .then(([uHobbyRes, uIntRes, uTeamRes, userRes, hobbyRes, intRes]) => {
-            this.setState({
-                userHobbies: uHobbyRes.user_hobbies, 
-                userInterests: uIntRes.user_interests,
-                userTeams: uTeamRes.user_teams,
-                title: userRes.user.name,
-                email: userRes.user.email,
-                hobbies: hobbyRes.hobbies,
-                interests: intRes.interests
-            });
-        })   
-      }
-      
+        this.context.clearError()
+        CrewApiService.getUser(userId).then(res => this.context.setUser(res.user))
+        CrewApiService.getUserHobbies(userId).then(res => this.context.setUserHobbies(res.user_hobbies)).catch(this.context.setError)
+        CrewApiService.getUserInterests(userId).then(res => this.context.setUserInterests(res.user_interests)).catch(this.context.setError)
+        CrewApiService.getUserTeams(userId).then(res => this.context.setUserTeams(res.user_teams)).catch(this.context.setError)
+    }
+
     handleUpdateUser = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const { userId } = this.props.match.params
-        const title = e.target.title.value.length ? e.target.title.value : this.state.title
-        const email = e.target.email.value.length ? e.email.title.value : this.state.email
-        return fetch(`${config.API_ENDPOINT}/user/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `bearer ${TokenService.getAuthToken()}`
-            },
-            body: JSON.stringify({
-                user: {
-                    email: email,
-                    name: title,
-                }
-            }),
-        })
-        .then(res => 
-            (!res.ok)
-                ? res.json().then(err => Promise.reject(err))
-                : res.json()    
-        )
-        .then(res =>
-            console.log(res)    
-        )
+        const title = e.target.title.value.length ? e.target.title.value : this.context.user.title
+        const location = e.target.location.value.length ? e.target.location.value : this.context.user.location
+        const age = e.target.age.value.length ? e.target.age.value : this.context.user.age
+        const newUser = {
+            ...this.context.user,
+            title,
+            location,
+            age,
+        }
+        CrewApiService.putUser(newUser, userId)
     }
 
     render() {
@@ -107,17 +40,17 @@ export default class ProfilePage extends Component {
                 <h3>No Contact Networking</h3>
                 <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships.</p>
                 <form className='update-info-form' onSubmit={this.handleUpdateUser}>
-                    <input className='text-input' name='title' type='text' placeholder={this.state.title} />
-                    <input className='text-input' name='email' type='email' placeholder={this.state.email} />
+                    <input className='text-input' name='title' type='text' placeholder={this.context.user.title} />
+                    <input className='text-input' name='location' type='text' placeholder={this.context.user.location} />
+                    <input className='text-input' name='age' type='number' placeholder={this.context.user.age} />
                     <button type='submit' className='update-button'>Update</button>
                 </form>
-                
                 <h2>Your Interests:</h2>
-                <ProfileGrid userId={userId} items={this.state.userInterests} />
+                <ProfileGrid userId={userId} section='interests' items={this.context.userInterests} />
                 <h2>Your Hobbies:</h2>
-                <ProfileGrid userId={userId} items={this.state.userHobbies} />
+                <ProfileGrid userId={userId} section='hobbies' items={this.context.userHobbies} />
                 <h2>Your Teams:</h2>
-                <ProfileGrid userId={userId} items={this.state.userTeams} />
+                <ProfileGrid userId={userId} section='teams' items={this.context.userTeams} />
             </div>
         )
     }

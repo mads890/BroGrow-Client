@@ -46,13 +46,12 @@
 
 .form-grid-item {
     text-align: center;
-    
 }
 
 .check-label {
     display: inline-block;
     width: 100%;
-    height: auto;
+    padding-bottom: 15px;
     border: 1px solid black;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
 }

@@ -1,0 +1,14 @@
+.interest-search {
+    margin-bottom: 20px;
+    width: 350px;;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-family: 'Nazare';
+    color: #1D3557;
+    border: 2px solid #1D3557;
+    background-color: transparent;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
+}

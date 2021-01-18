@@ -37,9 +37,8 @@
     margin-right: auto;
 }
 
-.text-input {
+.login-input {
     margin-bottom: 20px;
-    width: 60%;
     padding-right: 15px;
     padding-left: 15px;
     padding-top: 10px;
@@ -50,6 +49,7 @@
     border: 2px solid #1D3557;
     background-color: transparent;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
+    width: 300px;
 }
 
 input::placeholder {

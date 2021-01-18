@@ -9,6 +9,7 @@ import EmailConfirmation from './components/EmailConfirmation/EmailConfirmation'
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import UpdateForm from './components/UpdateForm/UpdateForm';
+import UpdatePage from './components/UpdatePage/UpdatePage';
 
 export default class App extends Component {
 
@@ -47,8 +48,13 @@ export default class App extends Component {
             />
             <Route
               exact
-              path={'/user/:userId/form'}
+              path={'/user/:userId/intake'}
               component={UpdateForm}
+            />
+            <Route
+              exact
+              path={'/user/:userId/update/:section'}
+              component={UpdatePage}
             />
             <Route component={NotFoundPage} />
           </Switch>

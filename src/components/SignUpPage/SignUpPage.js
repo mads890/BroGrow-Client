@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './SignUpPage.css';
 import TokenService from '../../services/token-service';
-import config from '../../config';
+import CrewApiService from '../../services/CrewApiService';
 
 export default class LoginPage extends Component {
     constructor(props) {
@@ -16,35 +16,22 @@ export default class LoginPage extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault()
-        const { email, password, name, age, tos } = e.target
+        const { email, password, title, age, tos } = e.target
+        const user = {
+            email: email.value,
+            password: password.value,
+            name: title.value,
+            age: age.value,
+            tos: tos.checked
+        }
 
-        return fetch(`${config.API_ENDPOINT}/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user: {
-                    email: email.value,
-                    password: password.value,
-                    name: name.value,
-                    age: age.value,
-                    tos: tos.checked
-                }
-            }),
-        })
-        .then(res => 
-            (!res.ok)
-                ? res.json().then(err => Promise.reject(err))
-                : res.json() 
-        )
+        CrewApiService.postUser(user)
         .then(res => {
             email.value = ''
             password.value = ''
-            name.value = ''
+            title.value = ''
             age.value = 0
             tos.checked = false
-            console.log(res)
             TokenService.saveAuthToken(res.token)
             this.onRegister()
         })
@@ -80,15 +67,15 @@ export default class LoginPage extends Component {
                 <h1>Find Your Crew</h1>
                 <form onSubmit={this.handleSubmit}>
                     <div className='step1' id='step1'>
-                        <input className='text-input' type='text' name='name' placeholder='Name' />
-                        <input className='text-input' type='number' name='age' placeholder='Age' />
-                        <input className='text-input' type='text' name='location' placeholder='Location' />
+                        <input className='register-input' type='text' name='title' placeholder='Name' />
+                        <input className='register-input' type='number' name='age' placeholder='Age' />
+                        <input className='register-input' type='text' name='location' placeholder='Location' />
                         
                         <button className='page-button' onClick={this.handleChangePage}>Next</button>
                     </div>
                     <div className='step2 hidden' id='step2'>
-                        <input className='text-input' type='email' name='email' placeholder='Email' />
-                        <input className='text-input' type='password' name='password' placeholder='Password' />
+                        <input className='register-input' type='email' name='email' placeholder='Email' />
+                        <input className='register-input' type='password' name='password' placeholder='Password' />
                         <div className='checkbox-container'>
                             <h3>Agree to Terms?</h3>
                             <input className='tos-input' type='checkbox' name='tos' value={1} /><label>Yes</label>

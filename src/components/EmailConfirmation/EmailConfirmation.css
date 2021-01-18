@@ -1,0 +1,45 @@
+.confirm-email-page {
+    text-align: center;
+}
+
+.confirm-email-page > h1 {
+    font-size: 50px;
+}
+
+.confirm-form {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+
+.confirm-button {
+    margin-top: 20px;
+    padding-right: 70px;
+    padding-left: 70px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    margin-left: 100px;
+    margin-right: 100px;
+    font-family: 'Nazare';
+    background-color: red;
+    color: white;
+    border: 0;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+.text-input {
+    margin-bottom: 20px;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-family: 'Nazare';
+    color: #1D3557;
+    border: 2px solid #1D3557;
+    background-color: transparent;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.15);
+}

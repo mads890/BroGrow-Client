@@ -1,83 +1,63 @@
 import React, { Component } from 'react';
 import './UpdateForm.css';
-import TokenService from '../../services/token-service';
-import config from '../../config';
+import ProfileContext from '../../contexts/ProfileContext';
+import CrewApiService from '../../services/CrewApiService';
 
 export default class UpdateForm extends Component {
+    static contextType = ProfileContext
+
     constructor(props) {
         super(props);
         this.state = {
             step: 1,
-            interests: [],
-            hobbies: [],
-            teams: [],
-            userInterests: [],
-            userHobbies: [],
-            userHobbiesForComp: [], 
-            userInterestsForComp: [],
-            userTeams: [],
             hobbySearchTerm: '',
             hobbiesFiltered: [],
             interestSearchTerm: '',
             interestsFiltered: [],
         }
-      }
+    }
     
-      componentDidMount() {
+    componentDidMount() {
         const { userId } = this.props.match.params
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `bearer ${TokenService.getAuthToken()}`
-            }
-        }
-        Promise.all([
-            fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies`, options),
-            fetch(`${config.API_ENDPOINT}/user/${userId}/interests`, options),
-            fetch(`${config.API_ENDPOINT}/user/${userId}/teams`, options),
-            fetch(`${config.API_ENDPOINT}/hobbies`, options),
-            fetch(`${config.API_ENDPOINT}/interests`, options),
-            fetch(`${config.API_ENDPOINT}/teams`, options)
-
-        ])
-        .then(([uHobbyRes, uIntRes, uTeamRes, hobbyRes, intRes, teamRes]) => {
-            if(!uHobbyRes.ok) {
-                return uHobbyRes.json().then(err => Promise.reject(err));
-            }
-            if(!uIntRes.ok) {
-                return uIntRes.json().then(err => Promise.reject(err));
-            }
-            if(!uTeamRes.ok) {
-                return uTeamRes.json().then(err => Promise.reject(err));
-            }
-            if(!hobbyRes.ok) {
-                return hobbyRes.json().then(err => Promise.reject(err));
-            }
-            if(!intRes.ok) {
-                return intRes.json().then(err => Promise.reject(err));
-            }
-            if(!teamRes.ok) {
-                return teamRes.json().then(err => Promise.reject(err));
-            }
-            return Promise.all([uHobbyRes.json(), uIntRes.json(), uTeamRes.json(), hobbyRes.json(), intRes.json(), teamRes.json()]);
-        })
-        .then(([uHobbyRes, uIntRes, uTeamRes, hobbyRes, intRes, teamRes]) => {
-            this.setState({
-                userHobbies: uHobbyRes.user_hobbies, 
-                userInterests: uIntRes.user_interests,
-                userHobbiesForComp: uHobbyRes.user_hobbies, 
-                userInterestsForComp: uIntRes.user_interests,
-                userTeamsForComp: uTeamRes.user_teams,
-                userTeams: uTeamRes.user_teams,
-                hobbies: hobbyRes.hobbies,
-                interests: intRes.interests,
-                teams: teamRes.teams,
-                hobbiesFiltered: hobbyRes.hobbies,
-                interestsFiltered: intRes.interests,
-            });
-        })   
-      }
+        this.context.clearError()
+        CrewApiService.getHobbies()
+            .then(res => Promise.all([
+                this.context.setAllHobbies(res.hobbies),
+                this.setState({
+                    hobbiesFiltered: res.hobbies
+                })
+            ]))
+            .catch(this.context.setError)
+        CrewApiService.getInterests()
+            .then(res => Promise.all([
+                this.context.setAllInterests(res.interests),
+                this.setState({
+                    interestsFiltered: res.interests
+                })
+            ]))
+            .catch(this.context.setError)
+        CrewApiService.getTeams()
+            .then(res => this.context.setAllTeams(res.teams))
+            .catch(this.context.setError)
+        CrewApiService.getUserHobbies(userId)
+            .then(res => Promise.all([
+                this.context.setUserHobbies(res.user_hobbies), 
+                this.context.setUserHobbiesComp(res.user_hobbies)
+            ]))
+            .catch(this.context.setError)
+        CrewApiService.getUserInterests(userId)
+            .then(res => Promise.all([
+                this.context.setUserInterests(res.user_interests), 
+                this.context.setUserInterestsComp(res.user_interests)
+            ]))
+            .catch(this.context.setError)
+        CrewApiService.getUserTeams(userId)
+            .then(res => Promise.all([
+                this.context.setUserTeams(res.user_teams), 
+                this.context.setUserTeamsComp(res.user_teams)
+            ]))
+            .catch(this.context.setError)
+    }
 
     handleNextPage = (e) => {
         e.preventDefault()
@@ -129,57 +109,45 @@ export default class UpdateForm extends Component {
 
     handleCheckInterest = (e) => {
         const interestId = Number(e.target.value)
-        const interestObj = this.state.interests.find(interest => interest.id === interestId)
+        const interestObj = this.context.allInterests.find(interest => interest.id === interestId)
         if(e.target.checked) {
-            this.setState({
-                userInterests: [...this.state.userInterests, interestObj]
-            })
+            this.context.setUserInterests([...this.context.userInterests, interestObj])
         }
         else {
-            const newInterests = this.state.userInterests.filter(interest => interest.id !== interestId)
-            this.setState({
-                userInterests: newInterests
-            })
+            const newInterests = this.context.userInterests.filter(interest => interest.id !== interestId)
+            this.context.setUserInterests(newInterests)
         }
     }
 
     handleCheckHobby = (e) => {
         const hobbyId = Number(e.target.value)
-        const hobbyObj = this.state.hobbies.find(hobby => hobby.id === hobbyId)
+        const hobbyObj = this.context.allHobbies.find(hobby => hobby.id === hobbyId)
 
         if(e.target.checked) {
-            this.setState({
-                userHobbies: [...this.state.userHobbies, hobbyObj]
-            })
+            this.context.setUserHobbies([...this.context.userHobbies, hobbyObj])
         }
         else {
-            const newHobbies = this.state.userHobbies.filter(hobby => hobby.id !== hobbyId)
-            this.setState({
-                userHobbies: newHobbies
-            })
+            const newHobbies = this.context.userHobbies.filter(hobby => hobby.id !== hobbyId)
+            this.context.setUserHobbies(newHobbies)
         }
     }
 
     handleCheckTeam = (e) => {
         const teamId = Number(e.target.value)
-        const teamObj = this.state.teams.find(team => team.id === teamId)
+        const teamObj = this.context.allTeams.find(team => team.id === teamId)
 
         if(e.target.checked) {
-            this.setState({
-                userTeams: [...this.state.userTeams, teamObj]
-            })
+            this.context.setUserTeams([...this.context.userTeams, teamObj])
         }
         else {
-            const newTeams = this.state.userTeams.filter(team => team.id !== teamId)
-            this.setState({
-                userTeams: newTeams
-            })
+            const newTeams = this.context.userTeams.filter(team => team.id !== teamId)
+            this.context.setUserTeams(newTeams)
         }
     }
 
     handleChangeHobbySearchTerm = (e) => {
         const hobbySearchTerm = e.target.value
-        const hobbiesFiltered = this.state.hobbies.filter(hobby => {
+        const hobbiesFiltered = this.context.allHobbies.filter(hobby => {
             return hobby.name.toLowerCase().includes(hobbySearchTerm.toLowerCase())
         })
         this.setState({ hobbySearchTerm })
@@ -188,7 +156,7 @@ export default class UpdateForm extends Component {
 
     handleChangeInterestSearchTerm = (e) => {
         const interestSearchTerm = e.target.value
-        const interestsFiltered = this.state.interests.filter(interest => {
+        const interestsFiltered = this.context.allInterests.filter(interest => {
             return interest.name.toLowerCase().includes(interestSearchTerm.toLowerCase())
         })
         this.setState({ interestSearchTerm })
@@ -202,176 +170,50 @@ export default class UpdateForm extends Component {
     handleSubmitInfo = (e) => {
         e.preventDefault()
         const { userId } = this.props.match.params
-        const userHobbies = this.state.userHobbies
-        const userInterests = this.state.userInterests
-        const userTeams = this.state.userTeams
-        const userHobbiesForComp = this.state.userHobbiesForComp
-        const userInterestsForComp = this.state.userInterestsForComp
-        const userTeamsForComp = this.state.userTeamsForComp
+        const userHobbies = this.context.userHobbies
+        const userInterests = this.context.userInterests
+        const userTeams = this.context.userTeams
+        const userHobbiesComp = this.context.userHobbiesComp
+        const userInterestsComp = this.context.userInterestsComp
+        const userTeamsComp = this.context.userTeamsComp
 
         userHobbies.forEach(hobby => {
-            if(!this.state.userHobbiesForComp.find(item => item.id === hobby.id)) {
-                return fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `bearer ${TokenService.getAuthToken()}`
-                    },
-                    body: JSON.stringify({
-                        user_hobby: {
-                            user_id: userId,
-                            hobby_id: hobby.id
-                        }
-                    }),
-                })
-                .then(res => 
-                    (!res.ok)
-                        ? res.json().then(err => Promise.reject(err))
-                        : res.json()    
-                )
-                .then(res =>
-                    console.log(res),
-                    console.log('check hobbies ran')  
-                )
+            if(!userHobbiesComp.find(item => item.id === hobby.id)) {
+                CrewApiService.postHobby(hobby.id, userId)
             }
         })
-        userHobbiesForComp.forEach(hobby => {
-            if(!this.state.userHobbies.find(item => item.id === hobby.id)) {
-                return fetch(`${config.API_ENDPOINT}/user/${userId}/hobbies/${hobby.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `bearer ${TokenService.getAuthToken()}`
-                    },
-                    body: JSON.stringify({
-                        user_hobby: {
-                            user_id: userId,
-                            hobby_id: hobby.id
-                        }
-                    }),
-                })
-                .then(res => 
-                    (!res.ok)
-                        ? res.json().then(err => Promise.reject(err))
-                        : res.json()    
-                )
-                .then(res =>
-                    console.log(res),
-                    console.log('uncheck hobbies ran') 
-                )
+        userHobbiesComp.forEach(hobby => {
+            if(!userHobbies.find(item => item.id === hobby.id)) {
+                CrewApiService.deleteHobby(hobby.id, userId)
             }
         })
         userInterests.forEach(interest => {
-            if(!this.state.userInterestsForComp.find(item => item.id === interest.id)) {
-                return fetch(`${config.API_ENDPOINT}/user/${userId}/interests`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `bearer ${TokenService.getAuthToken()}`
-                    },
-                    body: JSON.stringify({
-                        user_interest: {
-                            user_id: userId,
-                            interest_id: interest.id
-                        }
-                    }),
-                })
-                .then(res => 
-                    (!res.ok)
-                        ? res.json().then(err => Promise.reject(err))
-                        : res.json()    
-                )
-                .then(res =>
-                    console.log(res),
-                    console.log('check interests ran')   
-                )
+            if(!userInterestsComp.find(item => item.id === interest.id)) {
+                CrewApiService.postInterest(interest.id, userId)
             }
         })
-        userInterestsForComp.forEach(interest => {
+        userInterestsComp.forEach(interest => {
             if(!this.state.userInterests.find(item => item.id === interest.id)) {
-                return fetch(`${config.API_ENDPOINT}/user/${userId}/interests/${interest.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `bearer ${TokenService.getAuthToken()}`
-                    },
-                    body: JSON.stringify({
-                        user_interest: {
-                            user_id: userId,
-                            interest_id: interest.id
-                        }
-                    }),
-                })
-                .then(res => 
-                    (!res.ok)
-                        ? res.json().then(err => Promise.reject(err))
-                        : res.json()    
-                )
-                .then(res =>
-                    console.log(res),
-                    console.log('uncheck interests ran')    
-                )
+                CrewApiService.deleteInterest(interest.id, userId)
             }
         })
         userTeams.forEach(team => {
-            if(!this.state.userTeamsForComp.find(item => item.id === team.id)) {
-                return fetch(`${config.API_ENDPOINT}/user/${userId}/teams`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `bearer ${TokenService.getAuthToken()}`
-                    },
-                    body: JSON.stringify({
-                        user_team: {
-                            user_id: userId,
-                            team_id: team.id
-                        }
-                    }),
-                })
-                .then(res => 
-                    (!res.ok)
-                        ? res.json().then(err => Promise.reject(err))
-                        : res.json()    
-                )
-                .then(res =>
-                    console.log(res),
-                    console.log('check teams ran')  
-                )
+            if(!userTeamsComp.find(item => item.id === team.id)) {
+                CrewApiService.postTeam(team.id, userId)
             }
         })
-        userTeamsForComp.forEach(team => {
+        userTeamsComp.forEach(team => {
             if(!this.state.userTeams.find(item => item.id === team.id)) {
-                return fetch(`${config.API_ENDPOINT}/user/${userId}/teams/${team.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `bearer ${TokenService.getAuthToken()}`
-                    },
-                    body: JSON.stringify({
-                        user_team: {
-                            user_id: userId,
-                            team_id: team.id
-                        }
-                    }),
-                })
-                .then(res => 
-                    (!res.ok)
-                        ? res.json().then(err => Promise.reject(err))
-                        : res.json()    
-                )
-                .then(res =>
-                    console.log(res),
-                    console.log('uncheck teams ran')   
-                )
+                CrewApiService.deleteTeam(team.id, userId)
             }
         })
         this.onCompleteSubmit(userId)
     }
 
     render() {
-        const checkedInterestList = this.state.userInterests.map(interest => interest.id)
-        const checkedHobbyList = this.state.userHobbies.map(hobby => hobby.id)
-        const checkedTeamList = this.state.userTeams.map(team => team.id)
+        const checkedInterestList = this.context.userInterests.map(interest => interest.id)
+        const checkedHobbyList = this.context.userHobbies.map(hobby => hobby.id)
+        const checkedTeamList = this.context.userTeams.map(team => team.id)
         const interestGridItems = this.state.interestsFiltered.map(interest => {
             if(checkedInterestList.includes(interest.id)) {
                 return(
@@ -398,7 +240,7 @@ export default class UpdateForm extends Component {
             }
         }
         )
-        const baseballGridItems = this.state.teams.map(team => {
+        const baseballGridItems = this.context.allTeams.map(team => {
             if(team.sport === 'baseball') {
                 if(checkedTeamList.includes(team.id)) {
                     return(
@@ -413,7 +255,7 @@ export default class UpdateForm extends Component {
             }
         }
         )
-        const basketballGridItems = this.state.teams.map(team => {
+        const basketballGridItems = this.context.allTeams.map(team => {
             if(team.sport === 'basketball') {
                 if(checkedTeamList.includes(team.id)) {
                     return(
@@ -428,7 +270,7 @@ export default class UpdateForm extends Component {
             }
         }
         )
-        const footballGridItems = this.state.teams.map(team => {
+        const footballGridItems = this.context.allTeams.map(team => {
             if(team.sport === 'football') {
                 if(checkedTeamList.includes(team.id)) {
                     return(
@@ -443,7 +285,7 @@ export default class UpdateForm extends Component {
             }
         }
         )
-        const hockeyGridItems = this.state.teams.map(team => {
+        const hockeyGridItems = this.context.allTeams.map(team => {
             if(team.sport === 'hockey') {
                 if(checkedTeamList.includes(team.id)) {
                     return(
@@ -458,7 +300,7 @@ export default class UpdateForm extends Component {
             }
         }
         )
-        const soccerGridItems = this.state.teams.map(team => {
+        const soccerGridItems = this.context.allTeams.map(team => {
             if(team.sport === 'soccer') {
                 if(checkedTeamList.includes(team.id)) {
                     return(

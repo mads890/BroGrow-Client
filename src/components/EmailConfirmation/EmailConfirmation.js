@@ -5,15 +5,15 @@ import config from '../../config';
 export default class EmailConfirmation extends Component {
 
     onConfirmEmail = (id) => {
-        this.props.history.push(`/user/${id}/form`)
+        this.props.history.push(`/user/${id}/intake`)
     }
 
     handleSubmit = (e) => {
         e.preventDefault()
         const { email, confirmation } = e.target
 
-        return fetch(`${config.API_ENDPOINT}/register`, {
-            method: 'POST',
+        return fetch(`${config.API_ENDPOINT}/user/confirm`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -45,9 +45,9 @@ export default class EmailConfirmation extends Component {
             <div className='confirm-email-page'>
                 <h1>Confirm Your Email</h1>
                 <form className='confirm-form' onSubmit={this.handleSubmit} >
-                    <input type='email' name='email' placeholder='Email'>
+                    <input className='text-input' type='email' name='email' placeholder='Email'>
                     </input>
-                    <input type='text' name='confirmation' placeholder='Your Code Here'>
+                    <input className='text-input' type='text' name='confirmation' placeholder='Code'>
                     </input>
                 <button type='submit' className='confirm-button'>Confirm Email</button>
                 </form>

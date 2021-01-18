@@ -17,7 +17,7 @@ export default class ProfileGrid extends Component {
         return(
             <div className='profile-grid'>
                 {items}
-                <Link className='add-link' to={`/user/${userId}/form/3`}>+</Link>
+                <Link className='add-link' to={`/user/${userId}/update/${this.props.section}`}>+</Link>
             </div>
         )
     }
