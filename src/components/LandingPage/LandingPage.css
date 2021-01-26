@@ -1,7 +1,7 @@
 .header-div {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     margin-bottom: 300px;
 }
@@ -10,7 +10,7 @@
     text-align: left;
     display: inline-block;
     width: 500px;
-    margin-top: 150px;
+    margin-top: 20px;
 }
 
 .header-text > h1 {
@@ -25,9 +25,9 @@
 }
 
 .header-img {
-    width: 500px;
-    height: 500px;
-    margin-top: 150px;
+    width: 50%;
+    height: auto;
+    margin-top: 20px;
 }
 
 .landing-div-left {
@@ -101,16 +101,16 @@ p {
 .vertical-red {
     background-color: red;
     width: 10px;
-    height: 1500px;
+    height: 150vh;
     position: absolute;
-    left: 20px;
+    left: 30px;
     top: -100px;
 }
 
 .vertical-blue {
     background-color: #1D3557;
     width: 10px;
-    height: 1600px;
+    height: 165vh;
     position: absolute;
     left: 50px;
     top: -100px;
@@ -119,16 +119,17 @@ p {
 .horizontal-red {
     background-color: red;
     height: 10px;
-    width: 1900px;
+    width: 80vw;
     position: absolute;
-    top: 30px;
+    top: -20px;
 }
 
 .horizontal-blue {
     background-color: #1D3557;
     height: 10px;
-    width: 1800px;
+    width: 70vw;
     position: absolute;
+    top: -40px;
 }
 
 .diagonal-navy-first {
@@ -228,4 +229,76 @@ p {
     top: -50px;
     transform: rotate(320deg);
     z-index: -1;
+}
+
+.diagonal-navy-fat {
+    background-color: #1D3557;
+    width:150vw;
+    height: 10vh;
+    transform: rotate(345deg);
+    position: absolute;
+    left: -100px;
+}
+
+.diagonal-blue-fat {
+    background-color: #457B9D;
+    width:150vw;
+    height: 10vh;
+    transform: rotate(345deg);
+    position: absolute;
+    left: -100px;
+    top: 125px;
+}
+
+.diagonal-red-fat {
+    background-color: red;
+    width:150vw;
+    height: 10vh;
+    transform: rotate(345deg);
+    position: absolute;
+    left: -100px;
+    top: 250px;
+}
+
+.recap-section {
+    text-align: center;
+    margin-top: 90vh;
+}
+
+.recap-section > h1 {
+    font-size: 75px;
+}
+
+.numbered-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+}
+
+.numbered-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10vh;
+}
+
+.item-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    font-size: 80px;
+    width: 125px;
+    height: 125px;
+    border: 5px solid red;
+    border-radius: 100%;
+}
+
+.item-text {
+    text-align: left;
+    font-size: 20px;;
+    margin-left: 20px;
+    width: 45vw;
 }

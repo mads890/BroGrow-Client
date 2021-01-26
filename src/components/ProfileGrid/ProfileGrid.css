@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 200px 200px 200px 200px 200px;
     justify-content: center;
+    margin-bottom: 10vh;
 }
 
 .grid-item {
@@ -9,6 +10,15 @@
     width: 150px;
     padding: 15px;
     margin-bottom: 20px;
+}
+
+.title-item {
+    border: 0;
+    width: 150px;
+    text-align: left;
+    font-size: 28px;
+    grid-column: span 5;
+    margin-bottom: 10px;
 }
 
 .checked {

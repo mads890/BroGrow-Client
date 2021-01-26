@@ -352,6 +352,9 @@ export default class UpdateForm extends Component {
                     <button className='submit-button' type='submit'>Complete Profile</button>
                 </div>
                 </form>
+                <div className='horizontal-navy-update'></div>
+                <div className='horizontal-blue-update'></div>
+                <div className='horizontal-red-update'></div>
             </div>
         )
     }

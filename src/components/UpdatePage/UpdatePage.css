@@ -4,4 +4,27 @@
 
 .update-button {
     margin-bottom: 30px;
+    width: 10vw;
+}
+
+.horizontal-red-update {
+    background-color: red;
+    height: 30px;
+    margin-top: 5px;
+    width: 100vw;
+}
+
+.horizontal-blue-update {
+    background-color: #457B9D;
+    height: 30px;
+    margin-top: 5px;
+    width: 100vw;
+}
+
+.horizontal-navy-update {
+    background-color: #1D3557;
+    height: 30px;
+    margin-top: 10vh;
+    margin-bottom: 0;
+    width: 100vw;
 }

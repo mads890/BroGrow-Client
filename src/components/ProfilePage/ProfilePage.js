@@ -36,21 +36,23 @@ export default class ProfilePage extends Component {
         
         return(
             <div className='profile-page'>
-                <h1>Crew</h1>
-                <h3>No Contact Networking</h3>
-                <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships.</p>
+                <div className='profile-header'>
+                    <h1>Crew</h1>
+                    <h2>No Contact Networking</h2>
+                    <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships.</p>
+                </div>
                 <form className='update-info-form' onSubmit={this.handleUpdateUser}>
-                    <input className='text-input' name='title' type='text' placeholder={this.context.user.title} />
-                    <input className='text-input' name='location' type='text' placeholder={this.context.user.location} />
-                    <input className='text-input' name='age' type='number' placeholder={this.context.user.age} />
+                    <input className='profile-input' name='title' type='text' placeholder={this.context.user.title} />
+                    <input className='profile-input' name='location' type='text' placeholder={this.context.user.location} />
+                    <input className='profile-input' name='age' type='number' placeholder={this.context.user.age} />
                     <button type='submit' className='update-button'>Update</button>
                 </form>
-                <h2>Your Interests:</h2>
                 <ProfileGrid userId={userId} section='interests' items={this.context.userInterests} />
-                <h2>Your Hobbies:</h2>
                 <ProfileGrid userId={userId} section='hobbies' items={this.context.userHobbies} />
-                <h2>Your Teams:</h2>
                 <ProfileGrid userId={userId} section='teams' items={this.context.userTeams} />
+                <div className='red-propage'></div>
+                <div className='blue-propage'></div>
+                <div className='navy-propage'></div>
             </div>
         )
     }

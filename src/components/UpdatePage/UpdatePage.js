@@ -125,6 +125,9 @@ export default class UpdatePage extends Component {
                     {gridToUse}
                     <button className='update-button' type='submit'>Update</button>
                 </form>
+                <div className='horizontal-navy-update'></div>
+                <div className='horizontal-blue-update'></div>
+                <div className='horizontal-red-update'></div>
             </div>
         )
     }

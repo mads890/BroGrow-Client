@@ -19,7 +19,7 @@ export default class LandingPage extends Component {
                         <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships. So we connect busy dudes looking for someone to grab a beer with, play a round, or shoot the shit. </p>
                         <Link className='join-link' to='/register'><b>Join Crew</b></Link>
                     </div>
-                    <img className='header-img' src={require('../../Assets/hero.svg').default} alt='The Crew-per Hero' />
+                    <img className='header-img' src={require('../../Assets/Superman.png').default} alt='The Crew-per Hero' />
                 </div>
                 <div className='landing-div-right'>
                     <img className='testimonial-img' src={require('../../Assets/img1.png').default} alt='Men smiling' />
@@ -65,6 +65,30 @@ export default class LandingPage extends Component {
                         <h2>Ang Q.</h2>
                         <h3>San Francisco, CA</h3>
                         <p>“I started my company about six months ago, and while rewarding, it’s also draining socially. I have very little time left to go out and network. I signed up for Crew because I wanted to automate the process of meeting like-minded people with similar interests. No more hanging around meetups asking people what they do for a living.”</p>
+                    </div>
+                </div>
+                <div className='stripe-container'>
+                    <div className='diagonal-navy-fat'></div>
+                    <div className='diagonal-blue-fat'></div>
+                    <div className='diagonal-red-fat'></div>
+                </div>
+                <div className='recap-section'>
+                    <h1>Recap Time.</h1>
+                    <h2>Shall We Review The Process? We Shall.</h2>
+                    <div className='numbered-list'>
+                        <div className='numbered-list-item'>
+                            <div className='item-number'>1</div>
+                            <div className='item-text'>First off, we’ve got to get to know you. We’ll be asking some basic questions about your hobbies, interests, and favorite teams. Don’t worry, though. We’ll text you before we sell to big data. </div>
+                        </div>
+                        <div className='numbered-list-item'>
+                            <div className='item-number'>2</div>
+                            <div className='item-text'>Then we match you with other guys who have at least two overlapping attributes. We will not, under any circumstances, pair fans of rival teams. We’re better than that.</div>
+                        </div>
+                        <div className='numbered-list-item'>
+                            <div className='item-number'>3</div>
+                            <div className='item-text'>Then we send an intro email outlining why you’ll probably be friends, get along, and form a lifelong bond that will only be broken by death itself. We’ll include a little relevant conversation starter, just to break the ice. Something like, “Can you believe the Jets?” To which both of you should reply, “No, they’re killing me.”</div>
+                        </div>
+                        <Link className='join-link' to='/register'><b>Join Crew</b></Link>
                     </div>
                 </div>
             </div>
