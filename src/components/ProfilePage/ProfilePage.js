@@ -13,7 +13,7 @@ export default class ProfilePage extends Component {
         CrewApiService.getUser(userId).then(res => this.context.setUser(res.user))
         CrewApiService.getUserHobbies(userId).then(res => this.context.setUserHobbies(res.user_hobbies)).catch(this.context.setError)
         CrewApiService.getUserInterests(userId).then(res => this.context.setUserInterests(res.user_interests)).catch(this.context.setError)
-        CrewApiService.getUserTeams(userId).then(res => this.context.setUserTeams(res.user_teams)).catch(this.context.setError)
+       // CrewApiService.getUserTeams(userId).then(res => this.context.setUserTeams(res.user_teams)).catch(this.context.setError)
     }
 
     handleUpdateUser = (e) => {
@@ -49,7 +49,6 @@ export default class ProfilePage extends Component {
                 </form>
                 <ProfileGrid userId={userId} section='interests' items={this.context.userInterests} />
                 <ProfileGrid userId={userId} section='hobbies' items={this.context.userHobbies} />
-                <ProfileGrid userId={userId} section='teams' items={this.context.userTeams} />
                 <div className='red-propage'></div>
                 <div className='blue-propage'></div>
                 <div className='navy-propage'></div>

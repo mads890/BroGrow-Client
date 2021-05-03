@@ -79,10 +79,10 @@ input::placeholder {
 }
 
 .navy-stripe, .blue-stripe, .red-stripe {
-    width:3375px;
-    height: 100px;
+    width: 200vw;
+    height: 10vh;
     transform: rotate(345deg);
-    margin-bottom: 30px;
+    margin-bottom: 3vh;
 }
 
 .navy-stripe {

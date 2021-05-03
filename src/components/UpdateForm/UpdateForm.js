@@ -36,9 +36,11 @@ export default class UpdateForm extends Component {
                 })
             ]))
             .catch(this.context.setError)
+        /*
         CrewApiService.getTeams()
             .then(res => this.context.setAllTeams(res.teams))
             .catch(this.context.setError)
+        */
         CrewApiService.getUserHobbies(userId)
             .then(res => Promise.all([
                 this.context.setUserHobbies(res.user_hobbies), 
@@ -51,12 +53,14 @@ export default class UpdateForm extends Component {
                 this.context.setUserInterestsComp(res.user_interests)
             ]))
             .catch(this.context.setError)
+        /*
         CrewApiService.getUserTeams(userId)
             .then(res => Promise.all([
                 this.context.setUserTeams(res.user_teams), 
                 this.context.setUserTeamsComp(res.user_teams)
             ]))
             .catch(this.context.setError)
+        */
     }
 
     handleNextPage = (e) => {
@@ -71,6 +75,7 @@ export default class UpdateForm extends Component {
                 step: newStep
             })
         }
+        /*
         else if (this.state.step === 2) {
             const newStep = this.state.step + 1
             const stepThree = document.getElementById('step3')
@@ -81,6 +86,7 @@ export default class UpdateForm extends Component {
                 step: newStep
             })
         }
+        */
     }
 
     handlePrevPage = (e) => {
@@ -95,6 +101,7 @@ export default class UpdateForm extends Component {
                 step: newStep
             })
         }
+        /*
         else if (this.state.step === 3) {
             const newStep = this.state.step - 1
             const stepThree = document.getElementById('step3')
@@ -105,6 +112,7 @@ export default class UpdateForm extends Component {
                 step: newStep
             })
         }
+        */
     }
 
     handleCheckInterest = (e) => {
@@ -132,6 +140,7 @@ export default class UpdateForm extends Component {
         }
     }
 
+    /*
     handleCheckTeam = (e) => {
         const teamId = Number(e.target.value)
         const teamObj = this.context.allTeams.find(team => team.id === teamId)
@@ -144,6 +153,7 @@ export default class UpdateForm extends Component {
             this.context.setUserTeams(newTeams)
         }
     }
+    */
 
     handleChangeHobbySearchTerm = (e) => {
         const hobbySearchTerm = e.target.value
@@ -172,10 +182,10 @@ export default class UpdateForm extends Component {
         const { userId } = this.props.match.params
         const userHobbies = this.context.userHobbies
         const userInterests = this.context.userInterests
-        const userTeams = this.context.userTeams
+        //const userTeams = this.context.userTeams
         const userHobbiesComp = this.context.userHobbiesComp
         const userInterestsComp = this.context.userInterestsComp
-        const userTeamsComp = this.context.userTeamsComp
+        //const userTeamsComp = this.context.userTeamsComp
 
         userHobbies.forEach(hobby => {
             if(!userHobbiesComp.find(item => item.id === hobby.id)) {
@@ -197,6 +207,7 @@ export default class UpdateForm extends Component {
                 CrewApiService.deleteInterest(interest.id, userId)
             }
         })
+        /*
         userTeams.forEach(team => {
             if(!userTeamsComp.find(item => item.id === team.id)) {
                 CrewApiService.postTeam(team.id, userId)
@@ -207,8 +218,46 @@ export default class UpdateForm extends Component {
                 CrewApiService.deleteTeam(team.id, userId)
             }
         })
+        */
         this.onCompleteSubmit(userId)
     }
+
+    /*
+    team grid item template
+    const baseballGridItems = this.context.allTeams.map(team => {
+            if(team.sport === 'baseball') {
+                if(checkedTeamList.includes(team.id)) {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+                else {
+                    return(
+                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
+                    )
+                }
+            }
+        }
+        )
+
+    return
+    <div className='step3 hidden' id='step3'>
+                    <h1>What Colors Do You Bleed?</h1>
+                    <h2>Which teams do you follow?</h2>
+                    <p>We saved the best for last, because nothing defines a man like the teams he roots for.</p>
+                    <h2>MLB</h2>
+                    <div className='form-grid'>{baseballGridItems}</div>
+                    <h2>NBA</h2>
+                    <div className='form-grid'>{basketballGridItems}</div>
+                    <h2>NFL</h2>
+                    <div className='form-grid'>{footballGridItems}</div>
+                    <h2>NHL</h2>
+                    <div className='form-grid'>{hockeyGridItems}</div>
+                    <h2>Association Football (Soccer)</h2>
+                    <div className='form-grid'>{soccerGridItems}</div>
+                    <button className='submit-button' type='submit'>Complete Profile</button>
+                </div>
+    */
 
     render() {
         const checkedInterestList = this.context.userInterests.map(interest => interest.id)
@@ -240,81 +289,6 @@ export default class UpdateForm extends Component {
             }
         }
         )
-        const baseballGridItems = this.context.allTeams.map(team => {
-            if(team.sport === 'baseball') {
-                if(checkedTeamList.includes(team.id)) {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-                else {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-            }
-        }
-        )
-        const basketballGridItems = this.context.allTeams.map(team => {
-            if(team.sport === 'basketball') {
-                if(checkedTeamList.includes(team.id)) {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-                else {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-            }
-        }
-        )
-        const footballGridItems = this.context.allTeams.map(team => {
-            if(team.sport === 'football') {
-                if(checkedTeamList.includes(team.id)) {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-                else {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-            }
-        }
-        )
-        const hockeyGridItems = this.context.allTeams.map(team => {
-            if(team.sport === 'hockey') {
-                if(checkedTeamList.includes(team.id)) {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-                else {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-            }
-        }
-        )
-        const soccerGridItems = this.context.allTeams.map(team => {
-            if(team.sport === 'soccer') {
-                if(checkedTeamList.includes(team.id)) {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' checked /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-                else {
-                    return(
-                        <label className='form-grid-item'><input onChange={this.handleCheckTeam} className='checkbox' name='teams' value={team.id} type='checkbox' /><div className='check-label'><p>{team.name}</p></div></label>
-                    )
-                }
-            }
-        }
-        )
         
         return(
             <div>
@@ -333,22 +307,6 @@ export default class UpdateForm extends Component {
                     <p>In our opinion, interests are things you like to discuss, while hobbies are activities you enjoy.</p>
                     <input className='text-input' value={this.state.hobbySearchTerm} onChange={this.handleChangeHobbySearchTerm} placeholder='Search Hobbies...' />
                     <div className='form-grid'>{hobbyGridItems}</div>
-                    <button className='next-button' onClick={this.handleNextPage}>Next: Teams</button>
-                </div>
-                <div className='step3 hidden' id='step3'>
-                    <h1>What Colors Do You Bleed?</h1>
-                    <h2>Which teams do you follow?</h2>
-                    <p>We saved the best for last, because nothing defines a man like the teams he roots for.</p>
-                    <h2>MLB</h2>
-                    <div className='form-grid'>{baseballGridItems}</div>
-                    <h2>NBA</h2>
-                    <div className='form-grid'>{basketballGridItems}</div>
-                    <h2>NFL</h2>
-                    <div className='form-grid'>{footballGridItems}</div>
-                    <h2>NHL</h2>
-                    <div className='form-grid'>{hockeyGridItems}</div>
-                    <h2>Association Football (Soccer)</h2>
-                    <div className='form-grid'>{soccerGridItems}</div>
                     <button className='submit-button' type='submit'>Complete Profile</button>
                 </div>
                 </form>

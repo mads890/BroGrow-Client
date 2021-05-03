@@ -28,9 +28,11 @@ export default class UpdatePage extends Component {
                 })
             ]))
             .catch(this.context.setError)
+        /*
         CrewApiService.getTeams()
             .then(res => this.context.setAllTeams(res.teams))
             .catch(this.context.setError)
+        */
         CrewApiService.getUserHobbies(userId)
             .then(res => Promise.all([
                 this.context.setUserHobbies(res.user_hobbies), 
@@ -43,12 +45,14 @@ export default class UpdatePage extends Component {
                 this.context.setUserInterestsComp(res.user_interests)
             ]))
             .catch(this.context.setError)
+        /*
         CrewApiService.getUserTeams(userId)
             .then(res => Promise.all([
                 this.context.setUserTeams(res.user_teams), 
                 this.context.setUserTeamsComp(res.user_teams)
             ]))
             .catch(this.context.setError)
+        */
     }
 
     onCompleteSubmit = (id) => {
@@ -60,10 +64,10 @@ export default class UpdatePage extends Component {
         const { section, userId } = this.props.match.params
         const userHobbies = this.context.userHobbies
         const userInterests = this.context.userInterests
-        const userTeams = this.context.userTeams
+        //const userTeams = this.context.userTeams
         const userHobbiesComp = this.context.userHobbiesComp
         const userInterestsComp = this.context.userInterestsComp
-        const userTeamsComp = this.context.userTeamsComp
+        //const userTeamsComp = this.context.userTeamsComp
         if (section === 'hobbies') {
             userHobbies.forEach(hobby => {
                 if(!userHobbiesComp.find(item => item.id === hobby.id)) {
@@ -84,12 +88,13 @@ export default class UpdatePage extends Component {
                 }
             })
             userInterestsComp.forEach(interest => {
-                if(!this.state.userInterests.find(item => item.id === interest.id)) {
+                if(!this.state.userInterests?.find(item => item.id === interest.id)) {
                     CrewApiService.deleteInterest(interest.id, userId)
                 }
             })
             this.onCompleteSubmit(userId)
         }
+        /*
         else if (section === 'teams') {
             userTeams.forEach(team => {
                 if(!userTeamsComp.find(item => item.id === team.id)) {
@@ -97,12 +102,13 @@ export default class UpdatePage extends Component {
                 }
             })
             userTeamsComp.forEach(team => {
-                if(!this.state.userTeams.find(item => item.id === team.id)) {
+                if(!this.state.userTeams?.find(item => item.id === team.id)) {
                     CrewApiService.deleteTeam(team.id, userId)
                 }
             })
             this.onCompleteSubmit(userId)
         }
+        */
     }
 
     render() {

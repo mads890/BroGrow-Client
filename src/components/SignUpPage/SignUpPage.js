@@ -20,7 +20,7 @@ export default class LoginPage extends Component {
         const user = {
             email: email.value,
             password: password.value,
-            name: title.value,
+            first_name: title.value,
             age: age.value,
             tos: tos.checked
         }
@@ -34,6 +34,7 @@ export default class LoginPage extends Component {
             tos.checked = false
             TokenService.saveAuthToken(res.token)
             this.onRegister()
+            this.props.onLogin(res.user.id)
         })
     }
 

@@ -7,7 +7,11 @@ const ProfileContext = React.createContext({
         location: '',
         title: ''
     },
+    users: [],
+    matches: [],
     setUser: () => {},
+    setUsers: () => {},
+    setMatches: () => {},
     allHobbies: [],
     allInterests: [],
     allTeams: [],
@@ -40,6 +44,8 @@ export class ProfileProvider extends Component {
             location: '',
             title: '',
         },
+        users: [],
+        matches: [],
         allHobbies: [],
         allInterests: [],
         allTeams: [],
@@ -60,6 +66,14 @@ export class ProfileProvider extends Component {
             title: user.name,
         } 
         })
+    }
+
+    setUsers = users => {
+        this.setState({ users })
+    }
+
+    setMatches = matches => {
+        this.setState({ matches })
     }
     
     setAllHobbies = allHobbies => {
@@ -111,6 +125,10 @@ export class ProfileProvider extends Component {
         const value = {
             user: this.state.user,
             setUser: this.setUser,
+            users: this.state.users,
+            setUsers: this.setUsers,
+            matches: this.state.matches,
+            setMatches: this.setMatches,
             allHobbies: this.state.allHobbies,
             allInterests: this.state.allInterests,
             allTeams: this.state.allTeams,

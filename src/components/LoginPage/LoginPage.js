@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './LoginPage.css';
 import TokenService from '../../services/token-service';
 import config from '../../config';
@@ -29,13 +29,14 @@ export default class LoginPage extends Component {
         .then(res => 
             (!res.ok)
                 ? res.json().then(err => Promise.reject(err))
-                : res.json()  
+                : res.json()
         )
         .then(res => {
             email.value = ''
             password.value = ''
             TokenService.saveAuthToken(res.token)
             this.onLogin(res.user.id)
+            this.props.onLogin(res.user.id)
         })
         .catch(res => {
             this.setState({ error: res.error })
@@ -53,6 +54,7 @@ export default class LoginPage extends Component {
                     </input>
                 <button type='submit' className='login-button'>Login</button>
                 </form>
+                <Link to='/reset' className='reset-link'>Forgot Password?</Link>
                 <div className='navy-stripe'></div>
                 <div className='blue-stripe'></div>
                 <div className='red-stripe'></div>

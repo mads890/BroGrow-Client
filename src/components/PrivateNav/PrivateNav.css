@@ -1,0 +1,14 @@
+.private-nav {
+    display: flex;
+    justify-content: space-around;
+    width: 500px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #1D3557;  
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}

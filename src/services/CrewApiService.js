@@ -106,7 +106,7 @@ const CrewApiService = {
         .then(res => 
             (!res.ok)
                 ? res.json().then(err => Promise.reject(err))
-                : res.json() 
+                : res.json()
         )
     },
     postHobby(hobbyId, userId) {
@@ -249,7 +249,49 @@ const CrewApiService = {
                 ? res.json().then(err => Promise.reject(err))
                 : res.json()    
         )
-    }
+    },
+    getUsers() {
+        return fetch(`${config.API_ENDPOINT}/user`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${TokenService.getAuthToken()}`
+            },
+        })
+        .then(res => 
+            (!res.ok)
+            ? res.json().then(err => Promise.reject(err))
+            : res.json()
+        )
+    },
+    getMatches() {
+        return fetch(`${config.API_ENDPOINT}/matches`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${TokenService.getAuthToken()}`
+            },
+        })
+        .then(res => 
+            (!res.ok)
+            ? res.json().then(err => Promise.reject(err))
+            : res.json()
+        )
+    },
+    postMatch(match) {
+        return fetch(`${config.API_ENDPOINT}/matches`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                match
+            }),
+        })
+        .then(res => 
+            (!res.ok)
+                ? res.json().then(err => Promise.reject(err))
+                : res.json() 
+        )
+    },
 }
 
 export default CrewApiService

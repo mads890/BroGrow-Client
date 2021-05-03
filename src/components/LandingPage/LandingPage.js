@@ -3,24 +3,8 @@ import { Link } from 'react-router-dom'
 import './LandingPage.css';
 
 export default class LandingPage extends Component {
-    render() {
-        return(
-            <div className='landing-page'>
-                <div className='stripe-container'>
-                    <div className='vertical-red'></div>
-                    <div className='vertical-blue'></div>
-                    <div className='horizontal-red'></div>
-                    <div className='horizontal-blue'></div>
-                </div>
-                <div className='header-div'>
-                    <div className='header-text'>
-                        <h1>Crew</h1>
-                        <h2>No Contact Networking</h2>
-                        <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships. So we connect busy dudes looking for someone to grab a beer with, play a round, or shoot the shit. </p>
-                        <Link className='join-link' to='/register'><b>Join Crew</b></Link>
-                    </div>
-                    <img className='header-img' src={require('../../Assets/Superman.png').default} alt='The Crew-per Hero' />
-                </div>
+
+    /*
                 <div className='landing-div-right'>
                     <img className='testimonial-img' src={require('../../Assets/img1.png').default} alt='Men smiling' />
                     <div className='testimonial'>
@@ -67,10 +51,46 @@ export default class LandingPage extends Component {
                         <p>“I started my company about six months ago, and while rewarding, it’s also draining socially. I have very little time left to go out and network. I signed up for Crew because I wanted to automate the process of meeting like-minded people with similar interests. No more hanging around meetups asking people what they do for a living.”</p>
                     </div>
                 </div>
+*/
+
+    render() {
+        return(
+            <div className='landing-page'>
+                <div className='stripe-container'>
+                    <div className='vertical-red'></div>
+                    <div className='vertical-blue'></div>
+                    <div className='horizontal-red'></div>
+                    <div className='horizontal-blue'></div>
+                </div>
+                <div className='header-div'>
+                    <div className='header-text'>
+                        <h1>Crew</h1>
+                        <h2>No Contact Networking</h2>
+                        <p>After work, family, and taking out the trash, there’s almost no time left to grow personal and professional relationships. So we connect busy dudes looking for someone to grab a beer with, play a round, or shoot the shit. </p>
+                        <Link className='join-link' to='/register'><b>Join Crew</b></Link>
+                    </div>
+                    <img className='header-img' src={require('../../Assets/Superman.png').default} alt='The Crew-per Hero' />
+                </div>
+                <div className='testimonial-section'>
+                    <img className='testimonial-section-image' src={require('../../Assets/testimonial_section.png').default} alt='testimonials and images with stripes' />
+                </div>
                 <div className='stripe-container'>
                     <div className='diagonal-navy-fat'></div>
                     <div className='diagonal-blue-fat'></div>
                     <div className='diagonal-red-fat'></div>
+                </div>
+                <div className='tree'>
+                    <div className='tree-text'>
+                        <h1>Is Crew<br/>Right For You?</h1>
+                        <h2>Probably. But Let's Check.</h2>
+                    </div>
+                    <img className='tree-img' src={require('../../Assets/decision_tree.png').default} alt='decision tree explaining why you should join crew' />
+                </div>
+                <div className='stripe-container'>
+                    <div className='vertical-red-bottom'></div>
+                    <div className='vertical-blue-bottom'></div>
+                    <div className='horizontal-red-bottom'></div>
+                    <div className='horizontal-blue-bottom'></div>
                 </div>
                 <div className='recap-section'>
                     <h1>Recap Time.</h1>

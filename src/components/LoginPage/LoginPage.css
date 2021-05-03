@@ -32,9 +32,10 @@
     justify-content: center;
     align-items: center;
     width: 300px;
-    padding: 50px;
+    padding-top: 5vh;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 15px;
 }
 
 .login-input {
@@ -57,11 +58,16 @@ input::placeholder {
     text-align: center;
 }
 
+.reset-link {
+    text-decoration: none;
+    color: red;
+}
+
 .navy-stripe, .blue-stripe, .red-stripe {
-    width:3375px;
-    height: 100px;
+    width: 200vw;
+    height: 10vh;
     transform: rotate(345deg);
-    margin-bottom: 30px;
+    margin-bottom: 3vh;
 }
 
 .navy-stripe {
